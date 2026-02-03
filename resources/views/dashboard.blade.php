@@ -91,6 +91,20 @@
                 <a href="{{ route('profile.edit') }}" style="font-size: 0.9rem;">Editar Perfil &rarr;</a>
             </div>
         </div>
+
+        <!-- NEW: Personal Schedule Shortcut -->
+        <div class="card shadow-hover"
+            style="border: 2px dashed rgba(56, 189, 248, 0.3); background: rgba(56, 189, 248, 0.02);">
+            <h3
+                style="color: var(--primary); margin-bottom: 0.5rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                Personalización</h3>
+            <div style="font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem;">Mi Horario</div>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">Configura tus guardias y
+                actividades sobre una plantilla.</p>
+            <a href="{{ route('personal-schedules.index') }}"
+                style="display: inline-block; font-size: 0.9rem; color: var(--primary); font-weight: 600;">Ir a mi horario
+                &rarr;</a>
+        </div>
     </div>
 
     @if($user->hasRole('profesor') && $myGroups->isNotEmpty())

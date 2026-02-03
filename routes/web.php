@@ -65,4 +65,7 @@ Route::middleware(['auth'])->group(function () {
     // Schedule Templates
     Route::resource('schedule-templates', ScheduleTemplateController::class);
     Route::get('schedule-templates/{id}/preview', [ScheduleTemplateController::class, 'preview'])->name('schedule-templates.preview');
+
+    // Personal Schedules
+    Route::resource('personal-schedules', \App\Http\Controllers\PersonalScheduleController::class);
 });
