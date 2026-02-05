@@ -3,10 +3,14 @@
 @section('title', 'Dashboard')
 
 @section('content')
+    @php
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+    @endphp
     <div class="page-header">
         <h1 class="page-title">Dashboard</h1>
         <div style="color: var(--text-muted);">
-            Bienvenido, {{ Auth::user()->name }}
+            Bienvenido, {{ $user->name }}
         </div>
     </div>
 
@@ -40,6 +44,16 @@
                 style="display: inline-block; margin-top: 1rem; font-size: 0.9rem; color: #f59e0b;">Gestionar Grupos
                 &rarr;</a>
         </div>
+
+        <div class="card">
+            <h3
+                style="color: var(--text-muted); margin-bottom: 0.5rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                Total Zonas</h3>
+            <div style="font-size: 3rem; font-weight: 700; color: #10b981;">{{ $zonasCount }}</div>
+            <a href="{{ route('zonas.index') }}"
+                style="display: inline-block; margin-top: 1rem; font-size: 0.9rem; color: #10b981;">Gestionar Zonas
+                &rarr;</a>
+        </div>
         @endrole
 
         @role('profesor')
@@ -69,7 +83,7 @@
                 Mi Perfil</h3>
             <div style="margin-top: 0.5rem; display: flex; flex-direction: column; gap: 1rem;">
                 <div>
-                    @foreach(Auth::user()->getRoleNames() as $role)
+                    @foreach($user->getRoleNames() as $role)
                         <span class="badge badge-role"
                             style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">{{ ucfirst($role) }}</span>
                     @endforeach
@@ -77,9 +91,23 @@
                 <a href="{{ route('profile.edit') }}" style="font-size: 0.9rem;">Editar Perfil &rarr;</a>
             </div>
         </div>
+
+        <!-- NEW: Personal Schedule Shortcut -->
+        <div class="card shadow-hover"
+            style="border: 2px dashed rgba(56, 189, 248, 0.3); background: rgba(56, 189, 248, 0.02);">
+            <h3
+                style="color: var(--primary); margin-bottom: 0.5rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                Personalización</h3>
+            <div style="font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem;">Mi Horario</div>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">Configura tus guardias y
+                actividades sobre una plantilla.</p>
+            <a href="{{ route('personal-schedules.index') }}"
+                style="display: inline-block; font-size: 0.9rem; color: var(--primary); font-weight: 600;">Ir a mi horario
+                &rarr;</a>
+        </div>
     </div>
 
-    @if(Auth::user()->hasRole('profesor') && $myGroups->isNotEmpty())
+    @if($user->hasRole('profesor') && $myGroups->isNotEmpty())
         <div class="card" style="margin-top: 2rem;">
             <h2 style="margin-bottom: 1.5rem; font-size: 1.25rem; color: #fff;">Resumen de Mis Grupos</h2>
             <div class="table-container">
