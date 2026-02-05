@@ -10,6 +10,7 @@ use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\ScheduleTemplateController;
 use App\Http\Controllers\ZonaController;
+use App\Http\Controllers\AusenciaController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -65,4 +66,10 @@ Route::middleware(['auth'])->group(function () {
     // Schedule Templates
     Route::resource('schedule-templates', ScheduleTemplateController::class);
     Route::get('schedule-templates/{id}/preview', [ScheduleTemplateController::class, 'preview'])->name('schedule-templates.preview');
+
+    // Personal Schedules
+    Route::resource('personal-schedules', \App\Http\Controllers\PersonalScheduleController::class);
+
+    // Ausencias
+    Route::resource('ausencias', AusenciaController::class);
 });

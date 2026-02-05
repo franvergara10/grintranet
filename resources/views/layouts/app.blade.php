@@ -17,6 +17,7 @@
 
 <body>
     @auth
+        @php /** @var \App\Models\User $user */ $user = Auth::user(); @endphp
         <div class="app-container">
             <aside class="sidebar">
                 <div class="sidebar-title">
@@ -25,21 +26,21 @@
 
                 <div class="user-sidebar-info"
                     style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 0.75rem;">
-                    @if(Auth::user()->avatar)
-                        <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Avatar"
+                    @if($user->avatar)
+                        <img src="{{ asset('storage/' . $user->avatar) }}" alt="Avatar"
                             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
                     @else
                         <div
                             style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem;">
-                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                            {{ strtoupper(substr($user->name, 0, 1)) }}
                         </div>
                     @endif
                     <div style="overflow: hidden;">
                         <div
                             style="font-weight: 600; font-size: 0.9rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                            {{ Auth::user()->name }}</div>
+                            {{ $user->name }}</div>
                         <div style="font-size: 0.75rem; color: var(--text-muted);">
-                            {{ ucfirst(Auth::user()->getRoleNames()[0] ?? '') }}</div>
+                            {{ ucfirst($user->getRoleNames()[0] ?? '') }}</div>
                     </div>
                 </div>
 
@@ -54,6 +55,12 @@
                         <a href="{{ route('profile.edit') }}"
                             class="nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}">
                             Mi Perfil
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('personal-schedules.index') }}"
+                            class="nav-link {{ request()->routeIs('personal-schedules.*') ? 'active' : '' }}">
+                            Mi Horario
                         </a>
                     </li>
                     <li>
@@ -103,6 +110,12 @@
                         </a>
                     </li>
                     @endrole
+                    <li>
+                        <a href="{{ route('ausencias.index') }}"
+                            class="nav-link {{ request()->routeIs('ausencias.*') ? 'active' : '' }}">
+                            Ausencias
+                        </a>
+                    </li>
 
                     <li style="margin-top: auto;">
                         <form method="POST" action="{{ route('logout') }}">
