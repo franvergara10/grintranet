@@ -110,6 +110,12 @@
                         </a>
                     </li>
                     @endrole
+                    <li>
+                        <a href="{{ route('ausencias.index') }}"
+                            class="nav-link {{ request()->routeIs('ausencias.*') ? 'active' : '' }}">
+                            Ausencias
+                        </a>
+                    </li>
 
                     <li style="margin-top: auto;">
                         <form method="POST" action="{{ route('logout') }}">
