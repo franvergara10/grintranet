@@ -53,12 +53,14 @@
                                         <select name="selections[<?php echo e($slot->id); ?>][<?php echo e($day); ?>]" class="form-control select-activity"
                                             style="width: 100%; padding: 0.5rem; border-radius: 0.4rem; background: <?php echo e($currentSelection ? 'rgba(56, 189, 248, 0.1)' : 'var(--bg-card)'); ?>; color: #fff; border: 1px solid <?php echo e($currentSelection ? 'var(--primary)' : 'rgba(255,255,255,0.05)'); ?>;"
                                             onchange="this.style.background = this.value ? 'rgba(56, 189, 248, 0.1)' : 'var(--bg-card)'; this.style.borderColor = this.value ? 'var(--primary)' : 'rgba(255,255,255,0.05)';">
-                                            <?php $__currentLoopData = $options; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $val => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <option value="<?php echo e($val); ?>" style="color: #000; background: #fff;" <?php echo e(($currentSelection && $currentSelection->value == $val) ? 'selected' : ''); ?>>
-                                                    <?php echo e($label); ?>
-
+                                            <option value="" style="color: #000; background: #fff;">Vacío</option>
+                                            <?php $__currentLoopData = $guardias; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $guardia): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="guardia_<?php echo e($guardia->id); ?>" style="color: #000; background: #fff;" 
+                                                    <?php echo e(($currentSelection && $currentSelection->guardia_id == $guardia->id) ? 'selected' : ''); ?>>
+                                                    Guardia (<?php echo e($guardia->name); ?>)
                                                 </option>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="Otras" style="color: #000; background: #fff;" <?php echo e(($currentSelection && $currentSelection->value == 'Otras') ? 'selected' : ''); ?>>Otras</option>
                                         </select>
                                     </div>
                                 </td>

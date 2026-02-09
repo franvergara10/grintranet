@@ -9,7 +9,7 @@ class ScheduleSelection extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_schedule_id', 'time_slot_id', 'day', 'value'];
+    protected $fillable = ['user_schedule_id', 'time_slot_id', 'day', 'value', 'guardia_id'];
 
     public function userSchedule()
     {
@@ -19,5 +19,10 @@ class ScheduleSelection extends Model
     public function timeSlot()
     {
         return $this->belongsTo(TimeSlot::class);
+    }
+
+    public function guardia()
+    {
+        return $this->belongsTo(Guardia::class);
     }
 }

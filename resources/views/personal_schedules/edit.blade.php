@@ -53,11 +53,14 @@
                                         <select name="selections[{{ $slot->id }}][{{ $day }}]" class="form-control select-activity"
                                             style="width: 100%; padding: 0.5rem; border-radius: 0.4rem; background: {{ $currentSelection ? 'rgba(56, 189, 248, 0.1)' : 'var(--bg-card)' }}; color: #fff; border: 1px solid {{ $currentSelection ? 'var(--primary)' : 'rgba(255,255,255,0.05)' }};"
                                             onchange="this.style.background = this.value ? 'rgba(56, 189, 248, 0.1)' : 'var(--bg-card)'; this.style.borderColor = this.value ? 'var(--primary)' : 'rgba(255,255,255,0.05)';">
-                                            @foreach($options as $val => $label)
-                                                <option value="{{ $val }}" style="color: #000; background: #fff;" {{ ($currentSelection && $currentSelection->value == $val) ? 'selected' : '' }}>
-                                                    {{ $label }}
+                                            <option value="" style="color: #000; background: #fff;">Vacío</option>
+                                            @foreach($guardias as $guardia)
+                                                <option value="guardia_{{ $guardia->id }}" style="color: #000; background: #fff;" 
+                                                    {{ ($currentSelection && $currentSelection->guardia_id == $guardia->id) ? 'selected' : '' }}>
+                                                    Guardia ({{ $guardia->name }})
                                                 </option>
                                             @endforeach
+                                            <option value="Otras" style="color: #000; background: #fff;" {{ ($currentSelection && $currentSelection->value == 'Otras') ? 'selected' : '' }}>Otras</option>
                                         </select>
                                     </div>
                                 </td>

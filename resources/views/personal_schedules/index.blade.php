@@ -41,9 +41,13 @@
                     </div>
 
                     <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem;">
+                        <a href="{{ route('personal-schedules.show', $schedule) }}" class="btn"
+                            style="flex: 1; background: rgba(16, 185, 129, 0.1); color: #10b981; text-align: center; border: 1px solid #10b981;">
+                            Ver Horario
+                        </a>
                         <a href="{{ route('personal-schedules.edit', $schedule) }}" class="btn"
                             style="flex: 1; background: rgba(56, 189, 248, 0.1); color: var(--primary); text-align: center; border: 1px solid var(--primary);">
-                            Gestionar Celdas
+                            Editar
                         </a>
                         <form action="{{ route('personal-schedules.destroy', $schedule) }}" method="POST" style="display: inline;">
                             @csrf
