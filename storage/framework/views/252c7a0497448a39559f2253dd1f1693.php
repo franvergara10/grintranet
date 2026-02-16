@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="<?php echo e(asset('css/app.css')); ?>" rel="stylesheet">
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
 </head>
 
 <body>
@@ -39,9 +39,13 @@
                     <div style="overflow: hidden;">
                         <div
                             style="font-weight: 600; font-size: 0.9rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                            <?php echo e($user->name); ?></div>
+                            <?php echo e($user->name); ?>
+
+                        </div>
                         <div style="font-size: 0.75rem; color: var(--text-muted);">
-                            <?php echo e(ucfirst($user->getRoleNames()[0] ?? '')); ?></div>
+                            <?php echo e(ucfirst($user->getRoleNames()[0] ?? '')); ?>
+
+                        </div>
                     </div>
                 </div>
 
@@ -115,6 +119,12 @@
                         <a href="<?php echo e(route('ausencias.index')); ?>"
                             class="nav-link <?php echo e(request()->routeIs('ausencias.*') ? 'active' : ''); ?>">
                             Ausencias
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo e(route('aula.index')); ?>"
+                            class="nav-link <?php echo e(request()->routeIs('aula.*') ? 'active' : ''); ?>">
+                            AulaPass
                         </a>
                     </li>
 

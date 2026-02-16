@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
@@ -38,9 +38,11 @@
                     <div style="overflow: hidden;">
                         <div
                             style="font-weight: 600; font-size: 0.9rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                            {{ $user->name }}</div>
+                            {{ $user->name }}
+                        </div>
                         <div style="font-size: 0.75rem; color: var(--text-muted);">
-                            {{ ucfirst($user->getRoleNames()[0] ?? '') }}</div>
+                            {{ ucfirst($user->getRoleNames()[0] ?? '') }}
+                        </div>
                     </div>
                 </div>
 
@@ -114,6 +116,12 @@
                         <a href="{{ route('ausencias.index') }}"
                             class="nav-link {{ request()->routeIs('ausencias.*') ? 'active' : '' }}">
                             Ausencias
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('aula.index') }}"
+                            class="nav-link {{ request()->routeIs('aula.*') ? 'active' : '' }}">
+                            AulaPass
                         </a>
                     </li>
 
