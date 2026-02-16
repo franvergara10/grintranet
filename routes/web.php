@@ -72,4 +72,15 @@ Route::middleware(['auth'])->group(function () {
 
     // Ausencias
     Route::resource('ausencias', AusenciaController::class);
+    // AulaPass Integration
+    Route::middleware(['role:admin|profesor|conserje'])->group(function () {
+
+        
+        Route::get('/aula', [\App\Http\Controllers\HallPassController::class, 'index'])->name('aula.index');
+        Route::post('/aula/pass', [\App\Http\Controllers\HallPassController::class, 'store'])->name('aula.store');
+        Route::post('/aula/return-all', [\App\Http\Controllers\HallPassController::class, 'returnAll'])->name('aula.return-all');
+        Route::patch('/aula/pass/{hallPass}', [\App\Http\Controllers\HallPassController::class, 'update'])->name('aula.update');
+        Route::get('/aula/monitor', [\App\Http\Controllers\HallPassController::class, 'monitor'])->name('aula.monitor');
+        Route::get('/aula/history', [\App\Http\Controllers\HallPassController::class, 'history'])->name('aula.history');
+    });
 });
