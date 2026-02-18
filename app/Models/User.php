@@ -64,4 +64,13 @@ class User extends Authenticatable
         ];
     }
 
+    public function hallPasses()
+    {
+        return $this->hasMany(HallPass::class, 'teacher_id');
+    }
+
+    public function hallPassesAsStudent()
+    {
+        return $this->hasMany(HallPass::class, 'user_id');
+    }
 }
