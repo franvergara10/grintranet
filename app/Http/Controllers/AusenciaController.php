@@ -20,10 +20,9 @@ class AusenciaController extends Controller
         $date = $request->input('date', date('Y-m-d'));
         
         $ausencias = Ausencia::whereDate('fecha', $date)
+            ->where('user_id', Auth::id())
             ->with(['user', 'timeSlot', 'group', 'zona'])
             ->get()
-            // In case there are multiple absences per slot (e.g. multiple users), we might need to group by slot.
-            // But the requirement implies "the absence" for "that day". If logic allows multiple, I should handle a collection.
             ->groupBy('time_slot_id');
 
         $timeSlots = TimeSlot::orderBy('start_time')->get();

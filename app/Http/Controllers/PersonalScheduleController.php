@@ -6,6 +6,8 @@ use App\Models\ScheduleTemplate;
 use App\Models\UserSchedule;
 use App\Models\ScheduleSelection;
 use App\Models\TimeSlot;
+use App\Models\Guardia;
+use App\Models\Ausencia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +21,48 @@ class PersonalScheduleController extends Controller
             ->get();
 
         return view('personal_schedules.index', compact('schedules'));
+    }
+
+    public function show(UserSchedule $personal_schedule)
+    {
+        if ($personal_schedule->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $personal_schedule->load(['scheduleTemplate.timeSlots', 'selections.guardia']);
+        $template = $personal_schedule->scheduleTemplate;
+        $slots = $template->timeSlots;
+        // Determine today's day indicator (both name and numeric index 1-7 starting Monday)
+        $todayEnglish = strtolower(now()->format('l'));
+        $daysMap = [
+            'monday' => 'lunes',
+            'tuesday' => 'martes',
+            'wednesday' => 'miércoles',
+            'thursday' => 'jueves',
+            'friday' => 'viernes',
+            'saturday' => 'sábado',
+            'sunday' => 'domingo'
+        ];
+        $todaySpanish = $daysMap[$todayEnglish];
+        
+        // now()->dayOfWeekIso returns 1 (Monday) through 7 (Sunday)
+        $todayIndex = (string) now()->dayOfWeekIso; 
+
+        // Map selections for TODAY ONLY for easier view access
+        $todaySelections = $personal_schedule->selections->filter(function ($s) use ($todaySpanish, $todayIndex) {
+            $day = strtolower(trim($s->day));
+            return $day == $todaySpanish || $day == $todayIndex;
+        })->keyBy('time_slot_id');
+
+        // Map absences for TODAY (Excluding the user themselves)
+        $todayStr = now()->toDateString();
+        $absences = Ausencia::where('fecha', $todayStr)
+            ->where('user_id', '!=', Auth::id())
+            ->with(['user', 'timeSlot'])
+            ->get()
+            ->groupBy('time_slot_id');
+
+        return view('personal_schedules.show', compact('personal_schedule', 'template', 'slots', 'todaySpanish', 'todaySelections', 'absences'));
     }
 
     public function create()
@@ -58,13 +102,9 @@ class PersonalScheduleController extends Controller
             return $item->time_slot_id . '-' . $item->day;
         })->map->first();
 
-        // Possible values for the dropdown
-        $options = [
-            '' => 'Vacío',
-            'Guardia' => 'Guardia',
-        ];
+        $guardias = Guardia::all();
 
-        return view('personal_schedules.edit', compact('personal_schedule', 'template', 'slots', 'days', 'selections', 'options'));
+        return view('personal_schedules.edit', compact('personal_schedule', 'template', 'slots', 'days', 'selections', 'guardias'));
     }
 
     public function update(Request $request, UserSchedule $personal_schedule)
@@ -92,13 +132,22 @@ class PersonalScheduleController extends Controller
                             continue;
                         }
 
+                        $data = [];
+                        if (str_starts_with($value, 'guardia_')) {
+                            $data['guardia_id'] = str_replace('guardia_', '', $value);
+                            $data['value'] = 'Guardia';
+                        } else {
+                            $data['guardia_id'] = null;
+                            $data['value'] = $value;
+                        }
+
                         ScheduleSelection::updateOrCreate(
                             [
                                 'user_schedule_id' => $personal_schedule->id,
                                 'time_slot_id' => $slotId,
                                 'day' => $day,
                             ],
-                            ['value' => $value]
+                            $data
                         );
                     }
                 }
